@@ -9,6 +9,7 @@
     "build": "webpack --config webpack/webpack.prod.config.js",
     "clean": "rm -rf build",
     "lint": "tslint {src,test}/**/*.{ts,tsx}",
+    "lint-fix": "tslint {src,test}/**/*.{ts,tsx} --fix",
     "test": "jest"
   },
   "author": "Michał Załęcki <michal@michalzalecki.com>",

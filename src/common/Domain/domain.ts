@@ -50,7 +50,7 @@ interface PowerCenterEffect {
 
 type Effect = ResourceEffect | PowerCenterEffect;
 
-interface Choice {
+export interface Choice {
   id: ID;
   description: string;
   label: string;

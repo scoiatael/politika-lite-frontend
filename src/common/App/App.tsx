@@ -1,10 +1,12 @@
 import { hot } from "react-hot-loader";
 import React, { Component } from "react";
+import DecisionComponent from "./Decision";
+import * as SAMPLE from "../Backend/sample";
 
 const cls = require("./App.css");
 
-import {Resources, PowerCenters, Decision} from "../Domain/domain";
-import {Backend} from "../Backend/Backend";
+import { Resources, PowerCenters, Decision } from "../Domain/domain";
+import { Backend } from "../Backend/Backend";
 
 interface AppState {
     resources: Resources;
@@ -35,17 +37,21 @@ export class App extends Component<{}, AppState> {
       (newDecisions) => console.log({newDecisions}),
       (newDecisions) => console.log({newDecisions}),
       (newDecisions) => console.log({newDecisions}));
+
+    this.setState((state) => Object.assign({}, state, {
+      decisions: SAMPLE.decisions,
+    }));
   }
 
   public render() {
+    const {decisions} = this.state;
+
     return (
       <div>
         <h1 className={cls.title}>
-          Hello, World!
+          Politika
         </h1>
-        <code>
-          {JSON.stringify(this.state.decisions, null, "\t")}
-        </code>
+        {decisions.map((decision) => <DecisionComponent key={decision.id} decision={decision} />)}
       </div>
     );
   }
