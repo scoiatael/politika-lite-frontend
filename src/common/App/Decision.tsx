@@ -1,6 +1,6 @@
 import { hot } from "react-hot-loader";
 import React, { Component } from "react";
-import {ID, Decision, Choice} from "../Domain/domain";
+import {Decision} from "../Domain/Domain";
 
 export class DecisionComponent extends Component<{
   decision: Decision,

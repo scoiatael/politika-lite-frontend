@@ -1,10 +1,11 @@
 import { hot } from "react-hot-loader";
 import React, { Component } from "react";
-import {Decision, Choice} from "../Domain/domain";
+import {Decision, Choice, ID} from "../Domain/Domain";
 
 export class DecisionDialogComponent extends Component<{
   decision: Decision,
   onClickClose: () => void,
+  onChoice: (choice: {decision: ID, choice: ID}) => void,
 }, {}> {
   public render() {
     const { decision, onClickClose } = this.props;
@@ -29,7 +30,11 @@ export class DecisionDialogComponent extends Component<{
   }
 
   private renderChoice(choice: Choice) {
-    return <button key={choice.id} className="button">{choice.label}</button>;
+    return <button key={choice.id} onClick={() => this.onChoice(choice.id)} className="button">{choice.label}</button>;
+  }
+
+  private onChoice(choice: ID) {
+    return this.props.onChoice({decision: this.props.decision.id, choice});
   }
 }
 

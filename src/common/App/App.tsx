@@ -7,8 +7,8 @@ import "bulma/bulma.sass";
 
 const cls = require("./App.css");
 
-import { ID, Resources, PowerCenters, Decision } from "../Domain/domain";
-import { Backend } from "../Backend/Backend";
+import {ID, Resources, PowerCenters, Decision} from "../Domain/Domain";
+import {Backend, DecisionExpired, WorldState, ChoiceMade} from "../Backend/Backend";
 
 interface AppState {
     resources: Resources;
@@ -18,7 +18,7 @@ interface AppState {
 }
 
 export class App extends Component<{}, AppState> {
-  public state = {
+  public state: AppState = {
     resources: {
       money: 0,
       popularity: 0,
@@ -29,7 +29,7 @@ export class App extends Component<{}, AppState> {
       legislation: 0,
       media: 0,
     },
-    decisions: ([] as Decision[]),
+    decisions: [],
     activeDecision: null,
   };
 
@@ -38,9 +38,9 @@ export class App extends Component<{}, AppState> {
   public componentDidMount() {
     this.backend = new Backend(
       "ws://localhost:8081",
-      (newDecisions) => console.log({newDecisions}),
-      (newDecisions) => console.log({newDecisions}),
-      (newDecisions) => console.log({newDecisions}));
+      (newDecisions) => this.mergeDecisions(newDecisions),
+      (decisionExpired) => this.expireDecision(decisionExpired),
+      (worldState) => this.mergeWorld(worldState));
 
     this.setState((state) => Object.assign({}, state, {
       decisions: SAMPLE.decisions,
@@ -74,11 +74,36 @@ export class App extends Component<{}, AppState> {
         />)}
 
         {activeDecision ? <DecisionDialogComponent
+          onChoice={(choice) => this.sendChoice(choice)}
           decision={activeDecision}
           onClickClose={() => this.closeDecision()}
           /> : ""}
       </div>
     );
+  }
+
+  private mergeDecisions(decisions: Decision[]) {
+    this.setState((state) => Object.assign(state, {
+      decisions: state.decisions.concat(decisions),
+    }));
+  }
+
+  private expireDecision({id: expiredId}: DecisionExpired) {
+    this.setState((state) => Object.assign(state, {
+      decisions: state.decisions.filter(({id}) => id === expiredId),
+    }));
+  }
+
+  private mergeWorld({resources, power_centers}: WorldState) {
+    this.setState((state) => Object.assign(state, {
+      resources,
+      power_centers,
+    }));
+  }
+
+  private sendChoice(choiceMade: ChoiceMade) {
+    if (!this.backend) throw new Error("Not connected!");
+    this.backend.sendChoiceMade(choiceMade);
   }
 }
 

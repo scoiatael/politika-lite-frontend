@@ -1,12 +1,12 @@
-import {Decision, ID, Resources, PowerCenters} from "../Domain/domain";
+import {Decision, ID, Resources, PowerCenters} from "../Domain/Domain";
 
 type NewDecisions = Decision[];
 
-interface DecisionExpired {
+export interface DecisionExpired {
     id: ID;
 }
 
-interface WorldState {
+export interface WorldState {
     resources: Resources;
     power_centers: PowerCenters;
 }
@@ -15,9 +15,15 @@ type OnNewDecisions = (payload: NewDecisions) => void;
 type OnWorldState = (payload: WorldState) => void;
 type OnDecisionExpired = (payload: DecisionExpired) => void;
 
-interface ChoiceMade {
+export interface ChoiceMade {
     decision: ID;
     choice: ID;
+}
+
+function parseDecisions(decisions: any[]): NewDecisions {
+    return decisions.map((decision) => Object.assign(decision, {
+        deadline: new Date(Date.now() + decision.deadline * 1000),
+    }));
 }
 
 export class Backend {
@@ -44,7 +50,7 @@ export class Backend {
         const {type, payload} = JSON.parse(data);
         switch (type) {
             case "new_decisions":
-            return this.onNewDecisions(payload as NewDecisions);
+            return this.onNewDecisions(parseDecisions(payload));
             case "world_state":
             return this.onWorldState(payload as WorldState);
             case "decision_expired":

@@ -1,10 +1,8 @@
-import {Decision} from "../Domain/domain";
-
 export const decisions = [
   {
     id: "4cbacb32-0183-4a95-b747-16208486921a",
     description: "Accept bribe?",
-    deadline: new Date(),
+    deadline: new Date(Date.now() + 100 * 1000),
     choices: [
       {
         id: "5e60612d-6891-42a0-8919-60ee02b2cc4f",
