@@ -1,3 +1,4 @@
+// Value from 0 to ∞
 type ResourceValue = number;
 
 export interface Resources {
@@ -5,8 +6,9 @@ export interface Resources {
   popularity: ResourceValue;
 }
 
-// Value from 0 to 100 in percents
+// Value from -100 to 100
 type PowerCenterValue = number;
+
 export interface PowerCenters {
   media: PowerCenterValue;
   legislation: PowerCenterValue;
@@ -16,45 +18,10 @@ export interface PowerCenters {
 
 export type ID = string;
 
-enum ResourceEffectType {
-  ChangeResource = "ChangeResource",
-}
-
-enum PowerCenterEffectType {
-  ChangePowerCenter = "ChangePowerCenter",
-}
-
-enum ResourceEffectTarget {
-  Money = "money",
-  Popularity = "popularity",
-}
-
-enum PowerCenterEffectTarget {
-  Media = "media",
-  Legislation = "legislation",
-  Military = "military",
-  Judiciary = "judiciary",
-}
-
-interface ResourceEffect {
-  type: ResourceEffectType;
-  target: ResourceEffectTarget;
-  value: ResourceValue;
-}
-
-interface PowerCenterEffect {
-  type: PowerCenterEffectType;
-  target: PowerCenterEffectTarget;
-  value: PowerCenterValue;
-}
-
-type Effect = ResourceEffect | PowerCenterEffect;
-
 export interface Choice {
   id: ID;
   description: string;
   label: string;
-  effects: Effect[];
 }
 
 export interface Decision {
