@@ -11,7 +11,6 @@ type PowerCenterValue = number;
 
 export interface PowerCenters {
   media: PowerCenterValue;
-  legislation: PowerCenterValue;
   military: PowerCenterValue;
   judiciary: PowerCenterValue;
 }

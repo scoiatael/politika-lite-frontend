@@ -26,7 +26,6 @@ export class App extends Component<{}, AppState> {
     power_centers: {
       military: 0,
       judiciary: 0,
-      legislation: 0,
       media: 0,
     },
     decisions: [],
