@@ -1,24 +1,18 @@
 import { hot } from "react-hot-loader";
 import React, { Component } from "react";
-import {Decision, Choice} from "../Domain/domain";
+import {ID, Decision, Choice} from "../Domain/domain";
 
 export class DecisionComponent extends Component<{
   decision: Decision,
+  onClick: () => void,
 }, {}> {
   public render() {
-    const {decision} = this.props;
+    const {decision, onClick} = this.props;
     return (
-      <div>
+      <button className="button" onClick={onClick}>
         {decision.description}
-        {decision.choices.map((choice) => this.renderChoice(choice))}
-      </div>
+      </button>
     );
-  }
-
-  private renderChoice(choice: Choice) {
-    return <div key={choice.id}>
-      {choice.label}
-    </div>;
   }
 }
 
