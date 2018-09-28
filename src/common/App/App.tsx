@@ -3,74 +3,12 @@ import React, { Component } from "react";
 
 const cls = require("./App.css");
 
-type ResourceValue = number;
-
-interface Resources {
-  money: ResourceValue;
-  popularity: ResourceValue;
-}
-
-// Value from 0 to 100 in percents
-type PowerCenterValue = number;
-interface PowerCenters {
-  media: PowerCenterValue;
-  legislation: PowerCenterValue;
-  military: PowerCenterValue;
-  judiciary: PowerCenterValue;
-}
-
-type ID = string;
-
-enum ResourceEffectType {
-  ChangeResource = "ChangeResource",
-}
-
-enum PowerCenterEffectType {
-  ChangePowerCenter = "ChangePowerCenter",
-}
-
-enum ResourceEffectTarget {
-  Money = "money",
-  Popularity = "popularity",
-}
-
-enum PowerCenterEffectTarget {
-  Media = "media",
-  Legislation = "legislation",
-  Military = "military",
-  Judiciary = "judiciary",
-}
-
-interface ResourceEffect {
-  type: ResourceEffectType;
-  target: ResourceEffectTarget;
-  value: ResourceValue;
-}
-
-interface PowerCenterEffect {
-  type: PowerCenterEffectType;
-  target: PowerCenterEffectTarget;
-  value: PowerCenterValue;
-}
-
-type Effect = ResourceEffect | PowerCenterEffect;
-
-interface Choice {
-  id: ID;
-  description: string;
-  label: string;
-  effects: Effect[];
-}
-interface Decision {
-  id: ID;
-  description: string;
-  deadline: Date;
-  choices: Choice[];
-}
+import {Resources, PowerCenters, Decision} from "../Domain/domain";
+import {Backend} from "../Backend/Backend";
 
 interface AppState {
     resources: Resources;
-    powerCenters: PowerCenters;
+    power_centers: PowerCenters;
     decisions: Decision[];
 }
 
@@ -80,7 +18,7 @@ export class App extends Component<{}, AppState> {
       money: 0,
       popularity: 0,
     },
-    powerCenters: {
+    power_centers: {
       military: 0,
       judiciary: 0,
       legislation: 0,
@@ -88,6 +26,16 @@ export class App extends Component<{}, AppState> {
     },
     decisions: [],
   };
+
+  private backend?: Backend;
+
+  public componentDidMount() {
+    this.backend = new Backend(
+      "ws://localhost:8081",
+      (newDecisions) => console.log({newDecisions}),
+      (newDecisions) => console.log({newDecisions}),
+      (newDecisions) => console.log({newDecisions}));
+  }
 
   public render() {
     return (
