@@ -34,7 +34,9 @@ export class DecisionDialogComponent extends Component<{
   }
 
   private onChoice(choice: ID) {
-    return this.props.onChoice({decision: this.props.decision.id, choice});
+    const {onClickClose, onChoice, decision} = this.props
+    onClickClose();
+    return onChoice({decision: decision.id, choice});
   }
 }
 
