@@ -60,10 +60,19 @@ export class App extends Component<{}, AppState> {
 
   public render() {
     const { decisions, activeDecision } = this.state;
+    const imgStyle = {
+      backgroundImage: `url("/map.png")`,
+      width: "100%",
+      backgroundSize: "cover",
+      backgroundRepeat: "no-repeat",
+      minHeight: "700px",
+    };
 
     return (
-      <div>
-        <h1 className={cls.title}>
+      <div
+      style={imgStyle}
+      >
+        <h1 className={`${cls.title} is-size-1`}>
           Politika
         </h1>
         {decisions.map((decision) => <DecisionComponent

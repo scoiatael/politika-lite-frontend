@@ -13,6 +13,7 @@ app.set("x-powered-by", false);
 app.use(compression());
 app.use(logger);
 
+app.use(express.static("assets"));
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("build"));
 } else {
