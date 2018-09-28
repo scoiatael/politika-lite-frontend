@@ -24,7 +24,7 @@ export class App extends Component<{}, AppState> {
       legislation: 0,
       media: 0,
     },
-    decisions: [],
+    decisions: ([] as Decision[]),
   };
 
   private backend?: Backend;
@@ -43,6 +43,9 @@ export class App extends Component<{}, AppState> {
         <h1 className={cls.title}>
           Hello, World!
         </h1>
+        <code>
+          {JSON.stringify(this.state.decisions, null, "\t")}
+        </code>
       </div>
     );
   }
